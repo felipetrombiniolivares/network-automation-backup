@@ -1,0 +1,123 @@
+id,name,description,descriptionContentType,priority,hasDeskTickets,progress,displayOrder,decimalDisplayOrder,crmDealIds,tagIds,tags,updatedAt,updatedBy,deletedAt,deletedBy,isPrivate,lockdown,status,startDate,dueDate,startDateOffset,dueDateOffset,originalDueDate,dueDateBase,dueDateFromMilestone,estimateMinutes,accumulatedEstimatedMinutes,assignees,commentFollowers,changeFollowers,completeFollowers,attachments,notify,isArchived,capacities,proofs,createdBy,createdAt,sequence,workflowStages,dateUpdated,parentTaskId,tasklistId,assigneeUserIds,assigneeUsers,assigneeCompanyIds,assigneeCompanies,assigneeTeamIds,assigneeTeams,assigneeJobRoleIds,assigneeJobRoles,createdByUserId,sequenceId,parentTask.id,parentTask.type,tasklist.id,tasklist.type,userPermissions.canEdit,userPermissions.canComplete,userPermissions.canLogTime,userPermissions.canViewEstTime,userPermissions.canAddSubtasks,parentTask,completedAt,completedBy,completedOn
+45990039,Laboratório,,TEXT,,False,0,2000,2000,,,,2026-03-10T18:22:48Z,457812,,,0,,new,2026-02-02T00:00:00Z,2026-03-27T00:00:00Z,,,2026-03-27,2026-03-27T00:00:00Z,False,0,0,[],[],[],[],[],False,False,,,457812,2026-03-10T18:22:48Z,,"[{'workflowId': 18323, 'stageId': 0, 'stageTaskDisplayOrder': 2021}]",2026-03-10T18:22:48Z,45990027,3412044,,[],,[],,[],,[],457812,,45990027.0,tasks,3412044,tasklists,True,True,True,True,True,,,,
+46083888,Planejamento de Migração – Equipamento Spock,"## Planejamento de Migração – Equipamento Spock
+
+Este relatório consolida o status das ações de migração, a análise de tráfego atual e as recomendações técnicas para a desativação de serviços no equipamento Spock (CE-FLA-RT-FLA18-BN04).
+
+***
+
+#### 1. Status do Planejamento Inicial
+
+* **Migrar Link TI para Pike:** Concluído (Tráfego já não passa mais pelo equipamento Spock).
+
+* **Remover sessões de roteamento:** Pendente (Sessões com Junipero, Papati, Patata, Extreme 1, 2, 3 e CGN42-Part-CGN-Kirk em análise).
+
+* **Mapear interfaces UP e serviços:** Concluído (Serviços B2B, B2C, CGNAT e CDN mapeados detalhadamente).
+
+***
+
+#### 2. Análise do Cenário Atual e Descobertas
+
+**Clientes Corporativos (B2B)** Foram identificados 4 clientes ativos. A estratégia de migração difere conforme a topologia:
+
+* **Eth-Trunk3.3402 (TOP-SERVICE):** Liberado para migração imediata para o equipamento Pike.
+
+* **Eth-Trunk12.3407, Eth-Trunk12.1553, Eth-Trunk12.1554:** Dependentes da OLT Calix conectada fisicamente ao Spock. Ação: Aguardar a execução do swap de OLT (Calix para Nokia).
+
+**Clientes Residenciais (B2C) e CGNAT**
+
+* **Acessos:** Aproximadamente 2.588 clientes ativos autenticados via OLT Calix (Eth-Trunk12).
+
+* **Tráfego:** Consomem o CGNAT através das interfaces Eth-Trunk19.422 e Eth-Trunk19.423.
+
+* **Alocação IP:** Bloco 100.66.128.0/17 (Partição CGN-Spock no equipamento MPY-CGN-NAT-CGN41-Mary).
+
+**Servidor de CDN (Netflix)**
+
+* **Interface:** Eth-Trunk49.
+
+* **Status:** Alto volume de tráfego passante, com sessão BGP multihop estabelecida com o equipamento Patata.
+
+***
+
+#### 3. Mapeamento de Interfaces (Ações de Shutdown)
+
+**Interfaces elegíveis para aplicar shutdown (Podemos shutar):**
+
+* **Portas Físicas:**
+
+  * Portas físicas residuais do Link de TI (Antigo).
+
+  * Porta Eth-16 (Sem tráfego).
+
+* **Subinterface de Cliente (Pós-migração):**
+
+  * Eth-Trunk3.3402 (Aplicar shutdown imediatamente após a migração deste cliente para Pike).
+
+* **Subinterfaces Eth-Trunk0 (Ociosas/Sem Tráfego):** \* Eth-Trunk0.415, Eth-Trunk0.1116, Eth-Trunk0.1117, Eth-Trunk0.1118, Eth-Trunk0.1119, Eth-Trunk0.1120, Eth-Trunk0.1126, Eth-Trunk0.1135, Eth-Trunk0.1700.
+
+* **Subinterfaces Eth-Trunk1 (Ociosas/Sem Tráfego):**
+
+  * Eth-Trunk1.416, Eth-Trunk1.1116, Eth-Trunk1.1117, Eth-Trunk1.1118, Eth-Trunk1.1119, Eth-Trunk1.1120, Eth-Trunk1.1126, Eth-Trunk1.1135, Eth-Trunk1.1547, Eth-Trunk1.1548, Eth-Trunk1.1552, Eth-Trunk1.1553, Eth-Trunk1.1554, Eth-Trunk1.1555, Eth-Trunk1.1700.
+
+* **Subinterfaces Eth-Trunk3 (Ociosas/Sem Tráfego):**
+
+  * Eth-Trunk3.221, Eth-Trunk3.753, Eth-Trunk3.760, Eth-Trunk3.761, Eth-Trunk3.762, Eth-Trunk3.764, Eth-Trunk3.766, Eth-Trunk3.768, Eth-Trunk3.1508, Eth-Trunk3.1510, Eth-Trunk3.1513, Eth-Trunk3.1514, Eth-Trunk3.1515, Eth-Trunk3.1517, Eth-Trunk3.1520, Eth-Trunk3.1527, Eth-Trunk3.1528, Eth-Trunk3.1531, Eth-Trunk3.1534, Eth-Trunk3.1536, Eth-Trunk3.2500, Eth-Trunk3.3001, Eth-Trunk3.3224, Eth-Trunk3.3226.
+
+* **Subinterfaces Eth-Trunk16 (Ociosas/Sem Tráfego):**
+
+  * Eth-Trunk16.85, Eth-Trunk16.221, Eth-Trunk16.298, Eth-Trunk16.299, Eth-Trunk16.301, Eth-Trunk16.764, Eth-Trunk16.1000, Eth-Trunk16.2500, Eth-Trunk16.3001.
+
+* **Subinterfaces Eth-Trunk54 (Ociosas/Sem Tráfego):**
+
+  * Eth-Trunk54.301, Eth-Trunk54.1301, Eth-Trunk54.1501.
+
+**Interfaces NÃO elegíveis para shutdown no momento (NÃO podemos shutar):**
+
+* **Eth-Trunk2.298 e Eth-Trunk2.299:** Apresentam aprendizado ativo na tabela MAC (GPON-Telefonia e TVGpon1).
+
+* **Eth-Trunk12 (e subinterfaces .3407, .1553, .1554):** Mantém a OLT Calix e os clientes B2B/B2C ativos. Depende do projeto de swap para Nokia.
+
+* **Eth-Trunk19.422 e Eth-Trunk19.423:** Tráfego de CGNAT em uso pelos clientes B2C.
+
+* **Eth-Trunk49:** Tráfego considerável do servidor CDN Netflix.
+
+***
+
+#### 4. Análise e Recomendações para Sessões BGP/OSPF
+
+* **Sessão CGNAT(CGN-NAT-CGN41):** NÃO DESATIVAR. Esta é a única sessão que de fato não pode ser baixada no momento. A dependência para sua remoção é a retirada total dos clientes B2C de Spock.
+
+* **Sessão Patata:** Requer análise detalhada. Temos que estudar como desativar essa sessão sem causar indisponibilidade, pois ela atende ao tráfego do servidor Netflix conectado em Spock.
+
+* **Sessões Junipero, Papati, Extreme 1, 2 e 3:** Sugere-se avaliar a desativação ou realizar testes de engenharia de tráfego (desvio/cost out), desde que seja garantido que não haverá impacto de roteamento para os serviços que continuam ativos na caixa.
+
+***
+
+#### 5. Próximos Passos (Plano de Ação)
+
+1. Migrar o cliente Eth-Trunk3.3402 para Pike e aplicar shutdown na subinterface correspondente no Spock.
+
+2. Aplicar shutdown na porta Eth-16. Após um período de observação, pedir a remoção física e sistêmica do equipamento MPY-SWC-ACC-MRP2\_Baccarin.
+
+3. Iniciar estudo de viabilidade e impacto para desativar a sessão BGP com Patata.
+
+4. Planejar avaliação de impacto para descer as sessões com Junipero, Papati, Extreme 1, 2 e 3.
+
+5. Aguardar o swap da OLT Calix para Nokia para migrar os clientes restantes (Eth-Trunk12), o que permitirá, por fim, a remoção da sessão do CGNAT.
+",TEXT,,False,0,2000,2000,,,,2026-04-14T18:59:21Z,114337,,,0,,new,2025-07-15T00:00:00Z,2026-03-31T00:00:00Z,,,2026-04-24,2026-03-31T00:00:00Z,False,0,0,"[{'id': 459496, 'type': 'users'}]",[],[],[],[],False,False,,,459496,2026-03-26T11:51:24Z,,"[{'workflowId': 18323, 'stageId': 0, 'stageTaskDisplayOrder': 2023}]",2026-04-14T18:59:21Z,44556206,3412044,[459496],"[{'id': 459496, 'type': 'users'}]",,[],,[],,[],459496,,44556206.0,tasks,3412044,tasklists,True,True,True,True,True,,,,
+45860322,Projeto Inventário IP Fixo,,TEXT,,False,0,1997,1997,,[40699],"[{'id': 40699, 'type': 'tags'}]",2026-03-16T13:55:46Z,457812,,,0,,new,2026-01-05T00:00:00Z,2026-04-03T00:00:00Z,,,2026-03-27,2026-04-03T00:00:00Z,False,0,0,[],[],[],[],[],False,False,,,457812,2026-02-18T11:36:42Z,,"[{'workflowId': 18323, 'stageId': 93357, 'stageTaskDisplayOrder': 2011}]",2026-03-10T18:26:50Z,0,3412044,,[],,[],,[],,[],457812,,,,3412044,tasklists,True,True,True,True,True,,,,
+45860375,Projeto Sudeste 2,,TEXT,,False,0,1996,1996,,[40699],"[{'id': 40699, 'type': 'tags'}]",2026-03-10T18:26:37Z,457812,,,0,,new,2025-08-04T00:00:00Z,2026-04-17T00:00:00Z,,,2026-03-27,2026-04-17T00:00:00Z,False,0,0,[],[],[],[],[],False,False,,,457812,2026-02-18T11:56:35Z,,"[{'workflowId': 18323, 'stageId': 93357, 'stageTaskDisplayOrder': 2013}]",2026-03-10T18:26:37Z,0,3412044,,[],,[],,[],,[],457812,,,,3412044,tasklists,True,True,True,True,True,,,,
+44556206,Projeto Ceará,,TEXT,,False,0,2005,2005,,[40699],"[{'id': 40699, 'type': 'tags'}]",2026-04-14T18:59:21Z,114337,,,0,,reopened,2025-07-15T00:00:00Z,2026-04-24T00:00:00Z,,,,2026-04-24T00:00:00Z,False,0,0,[],[],[],[],[],False,False,,,457812,2025-07-18T17:10:59Z,,"[{'workflowId': 18323, 'stageId': 93357, 'stageTaskDisplayOrder': 2006}]",2026-04-14T18:59:21Z,0,3412044,,[],,[],,[],,[],457812,,,,3412044,tasklists,True,True,True,True,True,,,,
+45990041,Implementação,,TEXT,,False,0,2001,2001,,,,2026-03-10T18:26:50Z,457812,,,0,,new,2026-02-02T00:00:00Z,2026-05-15T00:00:00Z,,,2026-03-27,2026-05-15T00:00:00Z,False,0,0,[],[],[],[],[],True,False,,,457812,2026-03-10T18:23:12Z,,"[{'workflowId': 18323, 'stageId': 0, 'stageTaskDisplayOrder': 2022}]",2026-03-10T18:26:50Z,45990027,3412044,,[],,[],,[],,[],457812,,45990027.0,tasks,3412044,tasklists,True,True,True,True,True,,,,
+45990027,Projeto Core e Borda,,TEXT,,False,0,1995,1995,,[40699],"[{'id': 40699, 'type': 'tags'}]",2026-03-10T18:26:50Z,457812,,,0,,new,2026-02-02T00:00:00Z,2026-05-29T00:00:00Z,,,2026-05-29,2026-05-29T00:00:00Z,False,0,0,[],[],[],[],[],True,False,,,457812,2026-03-10T18:21:29Z,,"[{'workflowId': 18323, 'stageId': 93357, 'stageTaskDisplayOrder': 2014}]",2026-03-10T18:26:50Z,0,3412044,,[],,[],,[],,[],457812,,,,3412044,tasklists,True,True,True,True,True,,,,
+44675937,Projeto Padronização das OLTs com MPLS,,TEXT,,False,0,1998,1998,,[40699],"[{'id': 40699, 'type': 'tags'}]",2025-09-17T14:47:36Z,457812,,,0,,new,2025-08-05T00:00:00Z,,,,,,False,0,0,[],[],[],[],[],False,False,,,457812,2025-08-06T19:15:49Z,,"[{'workflowId': 18323, 'stageId': 93357, 'stageTaskDisplayOrder': 2010}]",2025-09-17T14:47:36Z,0,3412044,,[],,[],,[],,[],457812,,,,3412044,tasklists,True,True,True,True,True,,,,
+44546086,Projeto DNS,,TEXT,,False,100,1999,1999,,[40699],"[{'id': 40699, 'type': 'tags'}]",2025-09-15T01:53:52Z,457812,,,0,,completed,2025-07-16T00:00:00Z,,,,,,False,0,0,"[{'id': 128947, 'type': 'users'}]",[],[],[],[],False,False,,,457812,2025-07-17T15:19:36Z,,"[{'workflowId': 18323, 'stageId': 93357, 'stageTaskDisplayOrder': 2000}]",2025-08-28T12:28:12Z,0,3412044,[128947],"[{'id': 128947, 'type': 'users'}]",,[],,[],,[],457812,,,,3412044,tasklists,True,True,True,True,False,,2025-08-28T12:28:12Z,457812.0,2025-08-28T12:28:12Z
+44282993,Projeto de Documentação da Rede,,TEXT,,False,0,1999,1999,,,,2026-02-18T11:39:14Z,457812,,,0,,reopened,2025-06-09T00:00:00Z,,,,,,False,0,0,"[{'id': 391519, 'type': 'users'}, {'id': 429035, 'type': 'users'}]",[],[],[],[],False,False,,,114337,2025-06-09T11:39:20Z,,"[{'workflowId': 18323, 'stageId': 93361, 'stageTaskDisplayOrder': 2009}]",2026-02-18T11:39:14Z,0,3412044,"[391519, 429035]","[{'id': 391519, 'type': 'users'}, {'id': 429035, 'type': 'users'}]",,[],,[],,[],114337,,,,3412044,tasklists,True,True,True,True,True,,,,
+44282999,Projeto Cortez,,TEXT,,False,0,2000,2000,,[40699],"[{'id': 40699, 'type': 'tags'}]",2026-02-18T11:36:42Z,457812,,,0,,reopened,,,,,,,False,0,0,[],[],[],[],[],False,False,,,114337,2025-06-09T11:39:38Z,,"[{'workflowId': 18323, 'stageId': 93357, 'stageTaskDisplayOrder': 2002}]",2026-02-18T11:32:20Z,0,3412044,,[],,[],,[],,[],114337,,,,3412044,tasklists,True,True,True,True,True,,,,
+44282996,Projeto Webby SP2,,TEXT,,False,0,2001,2001,,,,2026-02-18T11:39:54Z,457812,,,0,,new,,,,,,,False,0,0,"[{'id': 128947, 'type': 'users'}, {'id': 375835, 'type': 'users'}, {'id': 114334, 'type': 'users'}]",[],[],[],[],False,False,,,114337,2025-06-09T11:39:31Z,,"[{'workflowId': 18323, 'stageId': 93361, 'stageTaskDisplayOrder': 2004}]",2026-02-18T11:39:54Z,0,3412044,"[128947, 375835, 114334]","[{'id': 128947, 'type': 'users'}, {'id': 375835, 'type': 'users'}, {'id': 114334, 'type': 'users'}]",,[],,[],,[],114337,,,,3412044,tasklists,True,True,True,True,True,,,,
+44282998,Projeto Z,,TEXT,,False,0,2002,2002,,,,2026-03-16T13:56:04Z,457812,,,0,,new,,,,,,,False,0,0,"[{'id': 429035, 'type': 'users'}]",[],[],[],[],False,False,,,114337,2025-06-09T11:39:36Z,,"[{'workflowId': 18323, 'stageId': 93357, 'stageTaskDisplayOrder': 2012}]",2026-02-18T11:38:58Z,0,3412044,[429035],"[{'id': 429035, 'type': 'users'}]",,[],,[],,[],114337,,,,3412044,tasklists,True,True,True,True,True,,,,
+44546078,Projeto Calix,,TEXT,,False,0,2003,2003,,,,2026-02-18T11:39:05Z,457812,,,0,,new,2025-07-01T00:00:00Z,,,,,,False,0,0,[],[],[],[],[],False,False,,,457812,2025-07-17T15:18:38Z,,"[{'workflowId': 18323, 'stageId': 93361, 'stageTaskDisplayOrder': 2008}]",2026-02-18T11:39:05Z,0,3412044,,[],,[],,[],,[],457812,,,,3412044,tasklists,True,True,True,True,True,,,,
+44556204,Projeto multicast,,TEXT,,False,0,2004,2004,,,,2026-02-18T11:38:43Z,457812,,,0,,new,,,,,,,False,0,0,"[{'id': 128947, 'type': 'users'}, {'id': 459099, 'type': 'users'}, {'id': 431416, 'type': 'users'}]",[],[],[],[],True,False,,,457812,2025-07-18T17:10:18Z,,"[{'workflowId': 18323, 'stageId': 93361, 'stageTaskDisplayOrder': 2005}]",2026-02-18T11:38:43Z,0,3412044,"[128947, 459099, 431416]","[{'id': 128947, 'type': 'users'}, {'id': 459099, 'type': 'users'}, {'id': 431416, 'type': 'users'}]",,[],,[],,[],457812,,,,3412044,tasklists,True,True,True,True,True,,,,
+44597994,Implementação de IPoE - Webby,,TEXT,,False,0,2006,2006,,,,2026-02-18T11:38:40Z,457812,,,0,,new,2025-07-24T00:00:00Z,,,,,,False,0,0,"[{'id': 375835, 'type': 'users'}]",[],[],[],[],False,False,,,457812,2025-07-24T19:27:44Z,,"[{'workflowId': 18323, 'stageId': 93361, 'stageTaskDisplayOrder': 2006}]",2026-02-18T11:38:40Z,0,3412044,[375835],"[{'id': 375835, 'type': 'users'}]",,[],,[],,[],457812,,,,3412044,tasklists,True,True,True,True,True,,,,
+44598009,Projeto Migração Juniper - Araras e Rio Claro,,TEXT,,False,0,2007,2007,,,,2026-02-18T11:38:37Z,457812,,,0,,new,2025-07-23T00:00:00Z,,,,,,False,0,0,"[{'id': 429035, 'type': 'users'}]",[],[],[],[],False,False,,,457812,2025-07-24T19:29:28Z,,"[{'workflowId': 18323, 'stageId': 93361, 'stageTaskDisplayOrder': 2007}]",2026-02-18T11:38:37Z,0,3412044,[429035],"[{'id': 429035, 'type': 'users'}]",,[],,[],,[],457812,,,,3412044,tasklists,True,True,True,True,True,,,,
