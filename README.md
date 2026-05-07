@@ -8,7 +8,7 @@ Projeto de automação de backup multi-vendor utilizando Python + Netmiko.
 - Nokia
 - Juniper
 - Auto detect vendor
-- Conexão via Bastion
+- Conexão via The Bastion (Jump Server)
 - Multi equipamentos
 - Backup automático
 
